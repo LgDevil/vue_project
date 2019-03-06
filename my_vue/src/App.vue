@@ -1,12 +1,5 @@
 <template>
-      <el-container id="app">
-        <el-header class="header" height="100px">
-          <h3>我的网站</h3>
-          <p>Vue小模块之用户登录</p>
-        </el-header>
-        <el-main>
-        </el-main>
-      </el-container>
+ <router-view></router-view>
 </template>
 
 <script>
@@ -16,8 +9,4 @@ export default {
 </script>
 
 <style>
-  .header{
-    background-color: #409EFF;
-    color: white;
-  }
 </style>
