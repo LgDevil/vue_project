@@ -29,5 +29,15 @@
 </script>
 
 <style scoped>
-
+  footer{
+    height:60px;
+    position:fixed;
+    bottom:0;
+    left:0px;
+    width: 100%;
+    background-color: rgb(84, 92, 100);
+  }
+  .el-header{
+    padding: 0px;
+  }
 </style>
