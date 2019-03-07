@@ -1,5 +1,26 @@
 <template>
   <div id="write_blog_id">
+
+    <div>
+      <el-row>
+        <el-col :span="8" class="input_blog_msg_wrapper">
+          <el-input placeholder="博客标题" >
+            <template slot="prepend">博客标题</template>
+          </el-input>
+        </el-col>
+        <el-col :span="8" class="input_blog_msg_wrapper">
+          <el-input placeholder="博客作者" >
+            <template slot="prepend">博客作者</template>
+          </el-input>
+        </el-col>
+        <el-col :span="8" class="input_blog_msg_wrapper">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
+        </el-col>
+      </el-row>
+    </div>
     <!-- 图片上传组件辅助-->
     <el-upload
       class="avatar-uploader"
@@ -120,5 +141,14 @@
   }
   #el_row_hutton_wrapper{
     margin-top: 1em;
+  }
+  .input_blog_msg_wrapper{
+    padding-left: 1em;
+  }
+  .input_blog_msg_wrapper:nth-of-type(1){
+    padding-left: 0;
+  }
+  .el-date-editor.el-input{
+    width: 100%;
   }
 </style>
