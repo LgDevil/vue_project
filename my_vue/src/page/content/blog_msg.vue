@@ -79,8 +79,17 @@
     export default {
         name: "blog_msg",
         data(){return{
-          activeName: '1'
-        }}
+          activeName: '1',
+          blog_list:[]
+              }
+        },
+        created() {
+          this.$axios.get("/api/blog/getAll").then((response)=>{
+            console.log(response.data);
+          }).catch((error) => {
+
+          })
+        }
     }
 </script>
 

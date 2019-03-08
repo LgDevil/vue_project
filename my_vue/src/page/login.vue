@@ -4,12 +4,12 @@
   <el-main>
     <el-form ref="form" :model="form" label-width="80px" :rules="rules">
       <el-form-item label="" prop="username">
-        <el-input v-model="form.username" autocomplete="off" placeholder="USERNAME" >
+        <el-input v-model="form.username"  placeholder="USERNAME" >
           <template slot="prepend">USERNAME</template>
         </el-input>
       </el-form-item>
       <el-form-item label="" prop="password" >
-        <el-input v-model="form.password" autocomplete="off"  placeholder="PASSWORD">
+        <el-input v-model="form.password"   placeholder="PASSWORD">
           <template slot="prepend">PASSWORD</template>
         </el-input>
       </el-form-item>
@@ -29,7 +29,7 @@
     name:"Login",
     data() {
       return {
-        form: {
+        form : {
           username:"",
           password:""
         },
@@ -45,12 +45,29 @@
     },
     methods: {
       onSubmit() {
+        const that=this;
         this.$refs.form.validate(valid =>{
           if (valid) {
-            window.localStorage.setItem('key', 'admin')
-            this.$router.push({path:'/main'})
+            this.$axios.get('/api/user/login',{
+              params:{
+                "username":that.$data.form.username,
+                "password":that.$data.form.password
+              }
+            }).then((response)=>{
+              if(response.data.code == 200){
+                window.localStorage.setItem("key",response.data.code);
+                this.$router.push({path:'/main'})
+              }else{
+                this.$message.error("用户名或密码错误");
+                return false;
+              }
+            }).catch((error)=>{
+              this.$message.error("服务器异常");
+              return false;
+            })
+
           } else {
-            console.log('error submit!!');
+            this.$message.error("用户名或密码错误");
             return false;
           }
         })

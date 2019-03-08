@@ -4,19 +4,21 @@
     <div>
       <el-row>
         <el-col :span="8" class="input_blog_msg_wrapper">
-          <el-input placeholder="博客标题" >
+          <el-input placeholder="博客标题" v-model="blog_title">
             <template slot="prepend">博客标题</template>
           </el-input>
         </el-col>
         <el-col :span="8" class="input_blog_msg_wrapper">
-          <el-input placeholder="博客作者" >
+          <el-input placeholder="博客作者" v-model="blog_author" >
             <template slot="prepend">博客作者</template>
           </el-input>
         </el-col>
         <el-col :span="8" class="input_blog_msg_wrapper">
           <el-date-picker
             type="date"
-            placeholder="选择日期">
+            placeholder="选择日期"
+            v-model="blog_date"
+          >
           </el-date-picker>
         </el-col>
       </el-row>
@@ -40,12 +42,15 @@
     >
     </quill-editor>
     <el-row id="el_row_hutton_wrapper">
-      <el-button type="primary">保存博客</el-button>
+      <el-button type="primary" @click="submitBlog">保存博客</el-button>
     </el-row>
   </div>
 </template>
 
 <script>
+
+  import {formatDate} from "../../utils/formatDate";
+
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     [{'header': 1}, {'header': 2}],               // custom button values
@@ -66,6 +71,9 @@
         name: "write_blog",
        data(){
          return {
+           blog_title:'',
+           blog_author:'',
+           blog_date:'',
            quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
            content: null,
            editorOption: {
@@ -93,11 +101,15 @@
            } // 有的图片服务器要求请求头需要有token
          }
        },
+      computed:{
+        blog_date_format:function () {
+          return formatDate(this.$data.blog_date)
+        }
+      },
       methods: {
         onEditorChange({editor, html, text}) {//内容改变事件
           console.log("---内容改变事件---")
           this.content = html
-          console.log(html)
         },
         // 富文本图片上传前
         beforeUpload() {
@@ -129,6 +141,24 @@
           // loading动画消失
           this.quillUpdateImg = false
           this.$message.error('图片插入失败')
+        },
+        submitBlog(){
+          let that=this;
+          this.$axios.post("/api/blog/save",{
+             "title":that.blog_title,
+             "html":that.content,
+             "startdate":that.blog_date_format,
+             "author":that.blog_author
+          }).then((response)=>{
+             if(response.data.code == 200){
+               this.$message("保存成功");
+             }else{
+               this.$message("保存失败")
+             }
+          }).catch((error)=>{
+            console.log(error)
+            this.$message("保存失败")
+          })
         }
       }
     }

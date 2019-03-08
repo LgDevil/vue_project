@@ -34,7 +34,7 @@ const router = new Router({
   ]
 })
 
-/*router.beforeEach((to,from,next) =>{
+router.beforeEach((to,from,next) =>{
   const userInfo = window.localStorage.getItem('key');
   if(userInfo){
     next();
@@ -45,6 +45,6 @@ const router = new Router({
       next('/');
     }
   }
-})*/
+})
 
 export default router
